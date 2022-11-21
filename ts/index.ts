@@ -1,6 +1,13 @@
 let jugadores: object[] = [];
 let campoDeMinas: any = [];
+let restantes: number = 1;
+let encontradas: number = 0;
+let time: number = 30;
+let numIntentos: number = 3;
+let minas: number = 1;
+// DOM
 let minasRestantes: any = document.getElementById("minasPorEncontrar");
+let minasEncontradas: any = document.getElementById("minasEncontradas");
 let tiempo: any = document.getElementById("tiempo");
 let intentos: any = document.getElementById("intentos");
 let numMinas: any = document.getElementById("numMinas");
@@ -8,11 +15,19 @@ let numMinas: any = document.getElementById("numMinas");
 const jugar = () => {
     inicializarCampo();
     printCampo();
-    console.log(tiempo)
-    let time: number = parseInt(tiempo.value);
-    const timeoutId = setTimeout(() => {
-        console.log(time * 1000);
-    }, 5000);
+    const intervalId = setInterval(() => {
+        time--;
+        tiempo.innerText = time.toString();
+        if (time === 0 || numIntentos == 0) {
+            clearInterval(intervalId);
+            alert("Has Perdido");
+        };
+        if (encontradas == minas) {
+            clearInterval(intervalId);
+            alert("Has ganado");
+        }
+    }, 1000);
+
 }
 
 const inicializarCampo = () => {
@@ -48,14 +63,14 @@ const printCampo = () => {
         for (let j = 0; j < campoDeMinas[i].length; j++) {
             if (campoDeMinas[i][j] == 1) {
                 info += `<label class="swap swap-flip text-3xl m-0">
-                <input type="checkbox" />
+                <input type="checkbox" onclick="checkMine(${i},${j})" id="${i}${j}"/>
                 <div class="swap-on p-1 bg-slate-800 rounded">💣</div>
                 <div class="swap-off p-1 bg-slate-800 rounded"></div>
             </label>`
             }
             else {
                 info += `<label class="swap swap-flip text-3xl m-0">
-                <input type="checkbox" />
+                <input type="checkbox" onclick="checkMine(${i},${j})" id="${i}${j}"/>
                 <div class="swap-on p-1 bg-slate-800 rounded">🤭</div>
                 <div class="swap-off p-1 bg-slate-800 rounded"></div>
             </label>`;
@@ -74,11 +89,37 @@ const verificarStorage = () => {
     // jugadores[0] = {nombre: "", minasEncontradas: 0, tiempo: 0, intentos: 0};
 }
 
+const checkMine = (i: number, j: number) => {
+    let element: any = document.getElementById(`${i}${j}`);
 
+    setTimeout(() => {
+        if (campoDeMinas[i][j] === 0) {
+            element.onclick = '';
+            element.click();
+            element.onclick = `checkMine(${i},${j})`;
+        }
+        if (campoDeMinas[i][j] === 1) {
+            restantes--;
+            encontradas++;
+            minasEncontradas.innerText = encontradas;
+            minasRestantes.innerText = restantes;
+        }
+        numIntentos--;
+        intentos.innerText = numIntentos;
+    }, 800);
+}
 
 verificarStorage();
+minasRestantes.innerText = numMinas.value;
+minasEncontradas.innerText = '0';
+tiempo.innerText = parseInt(numMinas.value) * 30;
+intentos.innerText = parseInt(numMinas.value) * 3;
 numMinas.addEventListener("change", (e: any) => {
     minasRestantes.innerText = e.target.value;
     tiempo.innerText = parseInt(e.target.value) * 30;
     intentos.innerText = parseInt(e.target.value) * 3;
+    restantes = parseInt(e.target.value);
+    time = parseInt(e.target.value) * 30;
+    numIntentos = parseInt(e.target.value) * 3;
+    minas = numMinas.value;
 });
