@@ -9941,6 +9941,12 @@ html {
   }
 }
 
+@media (min-width: 768px) {
+  .md\:flex-row {
+    flex-direction: row;
+  }
+}
+
 @media (min-width: 1024px) {
   .lg\:mx-auto {
     margin-left: auto;

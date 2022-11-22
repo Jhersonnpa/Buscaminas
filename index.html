@@ -23,7 +23,7 @@
 <body>
     <div class="container w-11/12 min-h-screen glass mx-auto text-center p-5">
         <h1 class="text-3xl">Buscaminas 💣</h1>
-        <div class="flex w-full gap-2 justify-center items-center">
+        <div class="flex flex-col md:flex-row w-full gap-2 justify-center items-center">
             <div class="form-control">
                 <label class="label" for="name">
                     <span class="label-text">Cuál es tu nombre?</span>
@@ -50,7 +50,7 @@
                     <option value="10">10</option>
                 </select>
             </div>
-            <button class="btn btn-secondary max-w-xs self-end" onclick="jugar()">Jugar</button>
+            <button class="btn btn-secondary max-w-xs mx-auto self-end" onclick="jugar()">Jugar</button>
         </div>
         <div class="flex justify-around my-6">
             <span class="bg-neutral rounded-sm py-2 px-1">Minas restantes: <span id="minasPorEncontrar"
