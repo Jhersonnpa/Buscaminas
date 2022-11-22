@@ -5,10 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACT02 Jherson Pabon</title>
+    <title>Buscaminas 💣</title>
     <link rel="stylesheet" href="./dist/output.css">
 
 </head>
+
+<input type="checkbox" id="my-modal-6" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box">
+        <h3 class="font-bold text-3xl" id="info-modal">Congratulations random Internet user!</h3>
+        <div class="modal-action">
+            <label for="my-modal-6" class="btn">X</label>
+        </div>
+    </div>
+</div>
 
 <body>
     <div class="container w-11/12 min-h-screen glass mx-auto text-center p-5">
@@ -19,13 +29,14 @@
                     <span class="label-text">Cuál es tu nombre?</span>
                 </label>
                 <input type="text" placeholder="Tu nombre aquí" class="input input-bordered max-w-xs" id="name" />
+                <label class="label py-0 hidden" id="label-error">
+                    <span class="label-text-alt text-xl font-bold" id="error-name" style="color: red;">error</span>
+                </label>
             </div>
             <div class="form-control">
                 <label class="label" for="numMinas">
                     <span class="label-text">Número de minas a jugar?</span>
                 </label>
-                <!-- <input type="number" name="numMinas" id="numMinas" min="1" max="24" value="1"
-                    class="input input-bordered"> -->
                 <select name="numMinas" id="numMinas" class="select select-bordered w-full max-w-xs">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -37,83 +48,48 @@
                     <option value="8">8</option>
                     <option value="9">9</option>
                     <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                    <option value="24">24</option>
                 </select>
             </div>
             <button class="btn btn-secondary max-w-xs self-end" onclick="jugar()">Jugar</button>
         </div>
         <div class="flex justify-around my-6">
-            <span>Minas restantes: <span id="minasPorEncontrar" class="text-red-500 font-semibold"></span></span>
-            <span>Minas encontradas: <span id="minasEncontradas" class="text-green-500 font-semibold"></span></span>
-            <span>Tiempo: <span id="tiempo"></span> s</span>
-            <span>Intentos: <span id="intentos"></span></span>
+            <span class="bg-neutral rounded-sm py-2 px-1">Minas restantes: <span id="minasPorEncontrar"
+                    class="text-red-500 font-semibold"></span></span>
+            <span class="bg-neutral rounded-sm py-2 px-1">Minas encontradas: <span id="minasEncontradas"
+                    class="text-green-500 font-semibold"></span></span>
+            <span class="bg-neutral rounded-sm py-2 px-1">Tiempo: <span id="tiempo"></span> s</span>
+            <span class="bg-neutral rounded-sm py-2 px-1">Intentos: <span id="intentos"></span></span>
         </div>
         <h2 class="text-2xl">Campo de minas</h2>
-        <div id="tablero" class="w-full grid grid-cols-5 gap-2 my-2 lg:w-1/2 lg:mx-auto">
-            <p>Introduce tu nombre y juega!</p>
+        <div id="tablero"
+            class="w-full grid grid-cols-5 gap-1 my-2 lg:w-1/2 lg:mx-auto mx-auto">
+            <div class="bg-gray-800 p-5"></div>
+            <div class="bg-gray-800 p-5"></div>
+            <div class="bg-gray-800 p-5"></div>
+            <div class="bg-gray-800 p-5"></div>
+            <div class="bg-gray-800 p-5"></div>
         </div>
-        <h2 class="text-2xl">Ranking</h2>
+        <h2 class="text-2xl mt-5">Ranking 👑</h2>
         <div class="overflow-x-auto">
-            <table class="table w-full">
+            <table class="table-normal w-full">
                 <!-- head -->
                 <thead>
                     <tr>
                         <th></th>
                         <th>Nombre</th>
+                        <th>Minas restantes</th>
                         <th>Minas encontradas</th>
                         <th>Tiempo</th>
                         <th>Intentos</th>
+                        <th>Minas Seleccionadas</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- row 1 -->
-                    <tr class="hover">
-                        <th>1</th>
-                        <td>Cy Ganderton</td>
-                        <td>2</td>
-                        <td>22s</td>
-                        <td>4</td>
-                    </tr>
-                    <!-- row 2 -->
-                    <tr class="hover">
-                        <th>2</th>
-                        <td>Hart Hagerty</td>
-                        <td>10</td>
-                        <td>4s</td>
-                        <td>3</td>
-                    </tr>
-                    <!-- row 3 -->
-                    <tr class="hover">
-                        <th>3</th>
-                        <td>Brice Swyre</td>
-                        <td>50</td>
-                        <td>15s</td>
-                        <td>6</td>
-                    </tr>
-                    <!-- row 4 -->
-                    <tr class="hover">
-                        <td>4</td>
-                        <td>Jhersin</td>
-                        <td>4</td>
-                        <td>10s</td>
-                        <td>3</td>
-                    </tr>
+                <tbody id="tbody" class="text-slate-300">
                 </tbody>
             </table>
         </div>
+        <!-- The button to open modal -->
+        <label for="my-modal-6" class="btn hidden" id="modal">open modal</label>
     </div>
     <script src="./js/index.js"></script>
 </body>
