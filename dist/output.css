@@ -9942,6 +9942,11 @@ html {
 }
 
 @media (min-width: 768px) {
+  .md\:mx-0 {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
   .md\:flex-row {
     flex-direction: row;
   }
