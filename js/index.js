@@ -5,6 +5,7 @@ let restantes = 1;
 let encontradas = 0;
 let time = 30;
 let numIntentos = 3;
+let intentosUsados = 0;
 let minas = 1;
 // DOM
 let minasRestantes = document.getElementById("minasPorEncontrar");
@@ -18,6 +19,7 @@ const reset = () => {
     time = numMinas.value * 30;
     numIntentos = numMinas.value * 3;
     minas = numMinas.value;
+    intentosUsados = 0;
     let tablero = document.getElementById("tablero");
     tablero.innerHTML = `<div class="bg-gray-800 p-5"></div>
     <div class="bg-gray-800 p-5"></div>
@@ -42,7 +44,7 @@ const jugar = () => {
     intentos.innerText = numIntentos;
     const intervalId = setInterval(() => {
         if (time === 0 || (numIntentos == 0 && encontradas != minas)) {
-            jugadores.push({ nombre: name.value, minasRestantes: restantes, minasEncontradas: encontradas, tiempo: time, intentos: numIntentos, minasSeleccionadas: minas, win: false });
+            jugadores.push({ nombre: name.value, minasRestantes: restantes, minasEncontradas: encontradas, tiempo: time, intentos: intentosUsados, minasSeleccionadas: minas, win: false });
             localStorage.setItem("jugadores", JSON.stringify(jugadores));
             if (time === 0)
                 infoModal.innerText = 'Game Over, se acabo el tiempo 😵‍💫';
@@ -51,16 +53,22 @@ const jugar = () => {
             modal.click();
             printPlayers();
             reset();
+            if (time > 0)
+                time--;
+            tiempo.innerText = time.toString();
             clearInterval(intervalId);
         }
         ;
         if (encontradas == minas && time > 0) {
-            jugadores.push({ nombre: name.value, minasRestantes: restantes, minasEncontradas: encontradas, tiempo: time, intentos: numIntentos, minasSeleccionadas: minas, win: true });
+            jugadores.push({ nombre: name.value, minasRestantes: restantes, minasEncontradas: encontradas, tiempo: time, intentos: intentosUsados, minasSeleccionadas: minas, win: true });
             localStorage.setItem("jugadores", JSON.stringify(jugadores));
             infoModal.innerText = 'Has ganado, revisa el ranking! 🥳';
             modal.click();
             printPlayers();
             reset();
+            if (time > 0)
+                time--;
+            tiempo.innerText = time.toString();
             clearInterval(intervalId);
         }
         if (time > 0)
@@ -156,6 +164,8 @@ const verificarStorage = () => {
 };
 const checkMine = (i, j) => {
     let element = document.getElementById(`${i}${j}`);
+    intentosUsados++;
+    console.log(intentosUsados);
     numIntentos--;
     intentos.innerText = numIntentos;
     if (campoDeMinas[i][j] === 0) {
@@ -163,7 +173,6 @@ const checkMine = (i, j) => {
         setTimeout(() => {
             element.click();
             element.setAttribute("onclick", `checkMine(${i},${j})`);
-            // element.onclick = `checkMine(${i},${j})`;
         }, 800);
     }
     if (campoDeMinas[i][j] === 1) {
